@@ -29,6 +29,17 @@ week_end      = 16            # Last week to scrub data for; in 2021 this is pro
 first_week = np.arange(week_beg,week_end+1) # For 2021, this indexes Weeks 1 to 17
 last_week = first_week                      # Loop takes each week as ex. Wk1:Wk1 for Week 1 data
 
+#-------------------------------------------------------
+# Defining the function that performs the webscrubbing
+#-------------------------------------------------------
+
+def fantasypros_weeklypoints(point_scoring,year,first_week,last_week):
+    url = "https://www.fantasypros.com/nfl/reports/leaders/" + str(point_scoring) + ".php?year=" + str(year) + "&start=" + str(first_week) + "&end=" + str(last_week)
+    html = pd.read_html(url, header=0)
+    df = html[0]
+    data = df.drop(['Rank','Games','Avg'],axis=1) # removing unwanted columns from dataset
+    return data
+
 #----------------------------------------------------------------------------------------------------
 # Webscrub data from FantasyPros.com 
 # example URL: https://www.fantasypros.com/nfl/reports/leaders/half-ppr.php?year=2021&start=1&end=17
